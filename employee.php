@@ -41,8 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $job = $_POST['job'];
 
     // Prepare and execute the SQL statement
-    //fix snn
-    $sql = "INSERT INTO employee (Name, DateHired, DOB, SNN, Gender, Job) VALUES ('$name', '$dateHired', '$dob', '$ssn', '$gender', '$job')";
+    $sql = "INSERT INTO employee (Name, DateHired, DOB, SSN, Gender, Job) VALUES ('$name', '$dateHired', '$dob', '$ssn', '$gender', '$job')";
     if ($conn->query($sql) === TRUE) {
         echo "Record inserted successfully";
     } else {
