@@ -20,7 +20,29 @@
 </head>
 <body>
     <h2>Search Employee</h2>
-    <button class="top-right-button" onclick="window.location.href='displayJob.php';">Job Page</button>
+    
+    <!-- Buttons that switch to other pages -->
+    <div class="job-button">
+        <button onclick="window.location.href='displayJob.php';">Job Page</button>
+    </div>
+    <div class="performance-button">
+        <button onclick="window.location.href='displayPerform.php';">Performance Page</button>
+    </div>
+    <style>
+    .job-button {
+        position: absolute;
+        top: 20px; /* Distance from the top of the parent container */
+        right: 150px; /* Distance from the right of the parent container */ 
+    }
+
+    .performance-button {
+        position: absolute;
+        top: 20px; /* Distance from the top of the parent container */
+        right: 10px; /* Distance from the right of the parent container */ 
+    }
+    </style>
+    
+    <!-- Search feature -->
     <form action="display.php" method="post">
     <label for="employeeID">Employee ID:</label>
     <input type="number" id="employeeID" name="employeeID">
