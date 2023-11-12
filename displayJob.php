@@ -20,12 +20,34 @@
 </head>
 <body>
 <h2>Search Job</h2>
-<button class="top-right-button" onclick="window.location.href='display.php';">Employee Page</button>
-    <form action="displayJob.php" method="post">
-    <label for="jobID">Job ID:</label>
-    <input type="number" id="jobID" name="jobID">
-    <input type="submit" value="Search">
-    </form>
+
+<!-- Buttons that switch to other pages -->
+<div class="employee-button">
+    <button onclick="window.location.href='display.php';">Employee Page</button>
+</div>
+<div class="performance-button">
+    <button onclick="window.location.href='displayPerform.php';">Performance Page</button> 
+</div>
+<style>
+    .employee-button {
+        position: absolute;
+        top: 20px; /* Distance from the top of the parent container */
+        right: 150px; /* Distance from the right of the parent container */ 
+    }
+
+    .performance-button {
+        position: absolute;
+        top: 20px; /* Distance from the top of the parent container */
+        right: 10px; /* Distance from the right of the parent container */ 
+    }
+</style>
+
+<!-- Search feature -->
+<form action="displayJob.php" method="post">
+<label for="jobID">Job ID:</label>
+<input type="number" id="jobID" name="jobID">
+<input type="submit" value="Search">
+</form>
 
 <h1>Job Info</h1>
 <table>
@@ -39,7 +61,6 @@
         <th>Training Duration (Days)</th>
     </tr>
 <?php
-
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -89,5 +110,6 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
+</table>
 </body>
 </html>
