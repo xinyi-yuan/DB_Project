@@ -35,7 +35,6 @@ CREATE TABLE PostEmployment (
 );
 
 CREATE TABLE Performance (
-    ID INT PRIMARY KEY AUTO_INCREMENT,
     EmployeeID INT,
     SalaryID INT,
     ReviewDate DATE,
