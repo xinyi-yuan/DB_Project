@@ -11,16 +11,39 @@
             padding: 8px;
             text-align: left;
         }
+        .top-right-button {
+            position: absolute;
+            top: 20px; 
+            right: 20px;
+        }
     </style>
 </head>
+<body>
+<h2>Search Job</h2>
+<button class="top-right-button" onclick="window.location.href='display.php';">Employee Page</button>
+    <form action="displayJob.php" method="post">
+    <label for="jobID">Job ID:</label>
+    <input type="number" id="jobID" name="jobID">
+    <input type="submit" value="Search">
+    </form>
 
 <h1>Job Info</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Manager ID</th>
+        <th>Job Title</th>
+        <th>Type</th>
+        <th>Years of Experience</th>
+        <th>Training Name</th>
+        <th>Training Duration (Days)</th>
+    </tr>
 <?php
-// Database credentials
+
 $servername = "localhost";
-$username = "root"; // replace with your database username
-$password = ""; // replace with your database password
-$dbname = "project"; // replace with your database name
+$username = "root";
+$password = "";
+$dbname = "project";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -30,62 +53,36 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// SQL to fetch data from Jobs table
-$sql = "SELECT * FROM jobs";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    echo "<table><tr><th>ID</th><th>Manager ID</th><th>Job Title</th></tr>";
-    while($row = $result->fetch_assoc()) {
-        echo "<tr>
-        <td>" . $row["ID"]. "</td>
-        <td>" . $row["ManagerID"]. "</td>
-        <td>" . $row["JobTitle"]. "</td>
-        </tr>";
-    } 
-    echo "</table>"; 
-} else {
-    echo "<tr><td colspan='7'>No results found</td></tr>";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $jobID = ($_POST["jobID"]);
+    
+    $sql = "SELECT Jobs.ID, Jobs.ManagerID, Jobs.JobTitle, JobRequiredExp.Type, JobRequiredExp.YearsOfExp, TrainingRequired.Name, TrainingRequired.DurationDays 
+            FROM Jobs
+            LEFT JOIN JobRequiredExp ON Jobs.ID = JobRequiredExp.JobID
+            LEFT JOIN TrainingRequired ON Jobs.ID = TrainingRequired.JobID
+            WHERE Jobs.ID = $jobID";
+}
+else {
+    // SQL to fetch data from joined table
+    $sql = "SELECT Jobs.ID, Jobs.ManagerID, Jobs.JobTitle, JobRequiredExp.Type, JobRequiredExp.YearsOfExp, TrainingRequired.Name, TrainingRequired.DurationDays 
+            FROM Jobs
+            LEFT JOIN JobRequiredExp ON Jobs.ID = JobRequiredExp.JobID
+            LEFT JOIN TrainingRequired ON Jobs.ID = TrainingRequired.JobID;";
 }
 
-// Start of Job Required Exp table
-$sql = "SELECT * FROM JobRequiredExp";
 $result = $conn->query($sql);
-
-echo "<h1>Job Required Exp</h2>";
-
 if ($result->num_rows > 0) {
-    echo "<table><tr><th>ID</th><th>Job ID</th><th>Type</th><th>Years of Experience</th></tr>";
     while($row = $result->fetch_assoc()) {
         echo "<tr>
-        <td>" . $row["ID"]. "</td>
-        <td>" . $row["JobID"]. "</td>
-        <td>" . $row["Type"]. "</td>
-        <td>" . $row["YearsOfExp"]. "</td>
+            <td>" . $row["ID"]. "</td>
+            <td>" . $row["ManagerID"]. "</td>
+            <td>" . $row["JobTitle"]. "</td>
+            <td>" . $row["Type"]. "</td>
+            <td>" . $row["YearsOfExp"]. "</td>
+            <td>" . $row["Name"]. "</td>
+            <td>" . $row["DurationDays"]. "</td>
         </tr>";
     }
-    echo "</table>";
-} else {
-    echo "<tr><td colspan='7'>No results found</td></tr>";
-}
-
-// Start of Training Required table
-$sql = "SELECT * FROM TrainingRequired";
-$result = $conn->query($sql);
-
-echo "<h1>Training Required</h1>";
-
-if ($result->num_rows > 0) {
-    echo "<table><tr><th>ID</th><th>Job ID</th><th>Name</th><th>Duration (Days)</th></tr>";
-    while($row = $result->fetch_assoc()) {
-        echo "<tr>
-        <td>" . $row["ID"]. "</td>
-        <td>" . $row["JobID"]. "</td>
-        <td>" . $row["Name"]. "</td>
-        <td>" . $row["DurationDays"]. "</td>
-        </tr>";
-    }
-    echo "</table>";
 } else {
     echo "<tr><td colspan='7'>No results found</td></tr>";
 }
